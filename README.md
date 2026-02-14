@@ -1,5 +1,3 @@
-# airlines_sdbms
-
 ## Project Workflow
 
 - **Conceptual Design**: Created the ER Model to define entities
@@ -8,7 +6,7 @@
 - **ETL & Data Population**: Cleaned raw data via Python, imported CSVs and Shapefiles, and added manual artificial data.
 - **Data Querying**: Executed both relational and spatial SQL queries
 
-### 🔗 Data Sources
+## 🔗 Data Sources
 
 * ✈️ **[OpenFlights](https://github.com/jpatokal/openflights/tree/master/data)**: 
   * Files: `airports.dat`, `airlines.dat`, `routes.dat`
