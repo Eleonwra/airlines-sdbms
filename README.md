@@ -2,12 +2,11 @@
 
 ## Project Workflow
 
-- **Conceptual Design (ER Model)**
-- **Logical Design (Relational Mapping)**: Converted the ER model into a Relational Schema, defining Primary Keys, Foreign Keys, and ensuring data normalization.
-- **Physical Implementation (PostgreSQL/PostGIS)**:
-- **ETL & Data Population**: Cleaned raw data using Python, imported it into the schema, and manually synthesized artificial data.
-- **Data Querying**:
-
+- **Conceptual Design**: Created the ER Model to define entities
+- **Logical Design**: Mapped the ER model to a Relational Schema with Primary/Foreign Keys and normalization.
+- **Physical Implementation**: Built the database in PostgreSQL with PostGIS for spatial data types.
+- **ETL & Data Population**: Cleaned raw data via Python, imported CSVs and Shapefiles, and added manual artificial data.
+- **Data Querying**: Executed both relational and spatial SQL queries
 
 ### 🔗 Data Sources
 
