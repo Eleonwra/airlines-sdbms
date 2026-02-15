@@ -8,6 +8,12 @@ This project is a Relational and Geospatial Database designed to model a static 
 - **ETL & Data Population**: Executed a custom preprocessing workflow using **Python** and **QGIS** to clean, extract, and transform raw datasets into an ER-compliant format before importing them into the database.
 - **Data Querying**: Executed both relational and spatial SQL queries
 
+## Tools 
+- **PostgreSQL & PostGIS**: Core database engine used for relational data and spatial geometry processing.
+- **pgAdmin 4**: Primary interface for database management.
+- **QGIS:** The "Spatial Engine" used for importing shapefile data
+- **Mapshaper:** The final visualization and optimization tool, used to inspect the final spatial output for web-readiness.
+
 ## 🔗 Data Sources
 
 * ✈️ **[OpenFlights](https://github.com/jpatokal/openflights/tree/master/data)**: 
