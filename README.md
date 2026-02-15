@@ -22,7 +22,7 @@ This project is a Relational and Geospatial Database designed to model a static 
  
  ## License & Attribution
 - **Data License**
-The airline, airport and route datasets used in this project are made available under the Open Database License (ODbL) v1.0. Any derivative databases created from this data are also subject to the ODbL.
+The airline, airport and route datasets used in this project are made available under the [Open Database License (ODbL) v1.0](https://github.com/jpatokal/openflights/blob/master/data/LICENSE). Any derivative databases created from this data are also subject to the ODbL.
 
 - **Software License**
 All original code, SQL scripts, and documentation in this repository are licensed under the MIT License. You are free to use, copy, and modify the code for any purpose, provided the original copyright notice is included.
