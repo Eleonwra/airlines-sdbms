@@ -43,9 +43,40 @@ VALUES
 (2, 'Despoina Mauroudi', '+49 151 9876 5432', 25, 'Japan', 'TKT-9990001112'),
 (3, 'Eleonora Stoikopoulou', '+1 212 555 0199', 26, 'Greece', 'TKT-9990001113');
 
--- Identifying Primary Operational Hubs per Airline
+--------------------------------------------------------------------------------
+-- HUB MANAGEMENT OPTIONS
+--------------------------------------------------------------------------------
+
+-- OPTION 1: Static Hub Table
+/* It counts flights per airport, ranks them by volume using ROW_NUMBER(), 
+ * and inserts only the #1 most-used airport into the "has_hub" table.
+ */
 INSERT INTO public."has_hub" ("Airline_ID", "Airport_ID")
 SELECT "Airline_ID", "Airport_ID_start"
+FROM (
+    SELECT u."Airline_ID", r."Airport_ID_start", 
+           COUNT(*) as flight_count,
+           ROW_NUMBER() OVER(PARTITION BY u."Airline_ID" ORDER BY COUNT(*) DESC) as rank
+    FROM public."Uses" u
+    JOIN public."Route" r ON u."Route_ID" = r."Route_ID"
+    GROUP BY u."Airline_ID", r."Airport_ID_start"
+) ranked_hubs
+WHERE rank = 1;
+
+
+-- OPTION 2: Dynamic Hub View 
+/* * ALTERNATIVE APPROACH: 
+ * If we aren't sure about the hubs, or if the flight schedule changes weekly, 
+ * we should NOT use a static table. Instead, we use this View.
+ *
+ * WHY A VIEW?
+ * 1. Real-time: It always reflects the CURRENT most-used airport.
+ * 2. Accuracy: If an airline switches its main base, the View updates automatically.
+ * 3. Integrity: It prevents "stale" data in the 'has_hub' table.
+ */
+
+CREATE VIEW v_calculated_airline_hubs AS
+SELECT "Airline_ID", "Airport_ID_start" AS "Main_Hub"
 FROM (
     SELECT u."Airline_ID", r."Airport_ID_start", 
            COUNT(*) as flight_count,

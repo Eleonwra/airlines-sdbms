@@ -84,6 +84,14 @@ CREATE TABLE public."Payment" (
         REFERENCES public."Ticket" ("Ticket_ID")
 );
 
+-- ===========================================================================
+-- DESIGN NOTE: Passenger Table
+-- Currently, Passenger is linked to Ticket (1:1 relationship).
+-- This is a simplified schema for learning purposes. 
+-- In a production environment, we would move "Passenger_ID" into the "Ticket" 
+-- table to allow one passenger to purchase multiple tickets over time.
+-- ===========================================================================
+
 -- Table: Passenger
 CREATE TABLE public."Passenger" (
     "Passenger_ID" SMALLINT PRIMARY KEY,

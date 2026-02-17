@@ -8,6 +8,14 @@ This project is a Relational and Geospatial Database designed to model a static 
 - **ETL & Data Population**: Executed a custom preprocessing workflow using **Python** and **QGIS** to clean, extract, and transform raw datasets into an ER-compliant format before importing them into the database.
 - **Data Querying**: Executed both relational and spatial SQL queries
 
+## KEY TECHNICAL FEATURES:
+ - Data Integrity: Implementation of ON DELETE CASCADE via safe transactions.
+ - Complex Joins: Multi-table relational mapping and revenue attribution.
+ - Advanced Analytics: Leverages Window Functions (PARTITION BY, DENSE_RANK) for complex passenger and hub leaderboards.
+ - Architectural Design: Comparative approaches using both static Tables and dynamic Views.
+ - Gap Analysis: Identifying 'Ghost' data through Set operations and JOINs.
+ Transactional Migrations: Utilizes BEGIN/COMMIT blocks to ensure schema changes are atomic and safe.
+
 ## 🔗 Data Sources
 
 * ✈️ **[OpenFlights](https://github.com/jpatokal/openflights/tree/master/data)**: 

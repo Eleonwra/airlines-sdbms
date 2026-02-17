@@ -13,7 +13,7 @@ FROM public."Airline" a
 JOIN public."Uses" u ON a."Airline_ID" = u."Airline_ID"
 ORDER BY Assigned_Routes DESC;
 
--- Hubs of actvie airlines
+-- Hubs of active airlines
 SELECT 
     a."Name" AS "Airline",
     air."Name" AS "Hub_Airport",
@@ -24,6 +24,15 @@ FROM public."has_hub" h
 JOIN public."Airline" a ON h."Airline_ID" = a."Airline_ID"
 JOIN public."Airport" air ON h."Airport_ID" = air."Airport_ID"
 ORDER BY a."Name";
+
+-- 'Ghost' Airports
+SELECT "Airport_ID" FROM public."Airport"
+EXCEPT
+(
+    SELECT "Airport_ID_start" FROM public."Route"
+    UNION
+    SELECT "Airport_ID_end" FROM public."Route"
+);
 
 -- Airlines Operating the Newcastle (NCL) to Enfidha (NBE) Route 
 SELECT "Name", "Airline_ID"
@@ -42,6 +51,37 @@ WHERE "Airline_ID" IN (
 SELECT f."Flight_ID", f."Departure_Time"::date AS "Flight_Date", t."Ticket_ID"
 FROM public."Flight" f
 LEFT JOIN public."Ticket" t ON f."Flight_ID" = t."Flight_ID";
+
+-- Flights with no sales yet
+SELECT 
+    f."Flight_ID", 
+    f."Departure_Time",
+    t."Ticket_ID"
+FROM public."Flight" f
+LEFT JOIN public."Ticket" t ON f."Flight_ID" = t."Flight_ID"
+WHERE t."Ticket_ID" IS NULL;
+
+-- Revenue Status Report
+SELECT 
+    f."Flight_ID", 
+    COALESCE(SUM(p."Price"), 0) AS "Total_Revenue"
+FROM public."Flight" f
+LEFT JOIN public."Ticket" t ON f."Flight_ID" = t."Flight_ID"
+LEFT JOIN public."Payment" p ON t."Ticket_ID" = p."Ticket_ID"
+GROUP BY f."Flight_ID"
+ORDER BY "Total_Revenue" ASC;
+
+-- Ticket Price Categorization
+SELECT 
+    "Ticket_ID",
+    "Price",
+    CASE 
+        WHEN "Price" > 800 THEN 'High'
+        WHEN "Price" BETWEEN 400 AND 800 THEN 'Standard'
+        ELSE 'Low'
+    END AS "Ticket_price"
+FROM public."Payment";
+
 
 -- Airlines Serving Greece
 SELECT DISTINCT "Airline"."Airline_ID", "Airline"."Name"
@@ -101,4 +141,42 @@ JOIN public."Payment" p ON t."Ticket_ID" = p."Ticket_ID"
 GROUP BY pa."Full_Name"
 ORDER BY "Total_Spent" DESC
 LIMIT 10;
+
+-- Above Average Spenders
+WITH AveragePrice AS (
+    SELECT AVG("Price") AS avg_val FROM public."Payment"
+)
+SELECT pass."Full_Name", p."Price"
+FROM public."Payment" p
+JOIN public."Ticket" t ON p."Ticket_ID" = t."Ticket_ID"
+JOIN public."Passenger" pass ON t."Ticket_ID" = pass."Ticket_ID"
+CROSS JOIN AveragePrice
+WHERE p."Price" > AveragePrice.avg_val;
+
+-- Global Passenger Ranking
+SELECT 
+    pass."Full_Name", 
+    p."Ticket_ID", 
+    p."Price",
+    DENSE_RANK() OVER (ORDER BY p."Price" DESC) AS price_rank
+FROM public."Payment" p
+JOIN public."Ticket" t ON p."Ticket_ID" = t."Ticket_ID"
+JOIN public."Passenger" pass ON t."Ticket_ID" = pass."Ticket_ID"
+ORDER BY price_rank ASC;
+
+-- Top Passenger ticket per flight
+WITH FlightLeaderboard AS (
+    SELECT 
+        t."Flight_ID",
+        pass."Full_Name", 
+        p."Price",
+        DENSE_RANK() OVER (PARTITION BY t."Flight_ID" ORDER BY p."Price" DESC) AS price_rank
+    FROM public."Payment" p
+    JOIN public."Ticket" t ON p."Ticket_ID" = t."Ticket_ID"
+    JOIN public."Passenger" pass ON t."Ticket_ID" = pass."Ticket_ID"
+)
+SELECT "Flight_ID", "Full_Name", "Price"
+FROM FlightLeaderboard
+WHERE price_rank = 1;
+
 
