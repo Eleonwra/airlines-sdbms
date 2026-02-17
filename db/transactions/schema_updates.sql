@@ -1,8 +1,8 @@
 BEGIN;
 /* This transaction updates the Foreign Key constraints to implement 'ON DELETE CASCADE'.
- * * 1. FLIGHT -> TICKET: If a flight is cancelled and deleted, its tickets are automatically removed.
+ * 1. FLIGHT -> TICKET: If a flight is cancelled and deleted, its tickets are automatically removed.
  * 2. TICKET -> PAYMENT: If a ticket is deleted, its corresponding payment record is automatically wiped.
- * * PASSENGER SAFETY: Note that we do NOT cascade to the Passenger table. This acts as a 
+ * PASSENGER SAFETY: Note that we do NOT cascade to the Passenger table. This acts as a 
  * "Safety Lock"—the database will block a deletion if it would leave a Passenger 
  * without their historical booking data.
  */
