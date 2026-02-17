@@ -4,8 +4,8 @@ This project is a **Relational and Geospatial Database** designed to model **a s
 ## Project Workflow
 - **Conceptual Design**: Created the ER Model to define entities
 - **Logical Design**: Mapped the ER model to a Relational Schema with Primary/Foreign Keys and normalization.
-- **Physical Implementation**: Built the database in PostgreSQL with PostGIS for spatial data types.
 - **ETL & Data Population**: Executed a custom preprocessing workflow using **Python** and **QGIS** to clean, extract, and transform raw datasets into an ER-compliant format before importing them into the database.
+- **Physical Implementation**: Built the database in PostgreSQL with PostGIS for spatial data types.
 - **Data Querying**: Executed both relational and spatial SQL queries
 
 ## Tools 
@@ -14,13 +14,12 @@ This project is a **Relational and Geospatial Database** designed to model **a s
 - **QGIS:** The "Spatial Engine" used for importing shapefile data
 - **Mapshaper:** The final visualization and optimization tool, used to inspect the final spatial output for web-readiness.
 
-## KEY TECHNICAL FEATURES:
- - Data Integrity: Implementation of ON DELETE CASCADE via safe transactions.
- - Complex Joins: Multi-table relational mapping and revenue attribution.
- - Advanced Analytics: Leverages Window Functions (PARTITION BY, DENSE_RANK) for complex passenger and hub leaderboards.
- - Architectural Design: Comparative approaches using both static Tables and dynamic Views.
- - Gap Analysis: Identifying 'Ghost' data through Set operations and JOINs.
- Transactional Migrations: Utilizes BEGIN/COMMIT blocks to ensure schema changes are atomic and safe.
+## Key technical features:
+ - **Data Integrity**: Implementation of ON DELETE CASCADE via safe transactions.
+ - **Complex Joins**: Multi-table relational mapping and revenue attribution.
+ - **Advanced Analytics**: Window Functions (PARTITION BY, DENSE_RANK) for complex passenger and hub leaderboards.
+ - **Architectural Design**: Comparative approaches using both static Tables and dynamic Views.
+ - **Gap Analysis**: Identifying 'Ghost' data through Set operations and JOINs.
 
 ## 🔗 Data Sources
 
