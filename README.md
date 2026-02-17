@@ -20,6 +20,7 @@ This project is a **Relational and Geospatial Database** designed to model **a s
  - **Advanced Analytics**: Window Functions (PARTITION BY, DENSE_RANK) for complex passenger and hub leaderboards.
  - **Architectural Design**: Comparative approaches using both static Tables and dynamic Views.
  - **Gap Analysis**: Identifying 'Ghost' data through Set operations and JOINs.
+ - **Spatial Integration**: PostGIS analysis ranging from airport proximity and regional filtering to multi route merging.
 
 ## 🔗 Data Sources
 
