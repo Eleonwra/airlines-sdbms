@@ -1,5 +1,5 @@
 ## Project Overview
-This project is a Relational and Geospatial Database designed to model a static simulation of global air transport infrastructure by integrating real-world spatial and non-spatial flight data with manually generated transactional records.
+This project is a **Relational and Geospatial Database** designed to model **a static simulation of global air transport infrastructure** by integrating **real-world spatial and non-spatial flight data** with manually generated transactional records.
 
 ## Project Workflow
 - **Conceptual Design**: Created the ER Model to define entities
@@ -7,6 +7,12 @@ This project is a Relational and Geospatial Database designed to model a static 
 - **Physical Implementation**: Built the database in PostgreSQL with PostGIS for spatial data types.
 - **ETL & Data Population**: Executed a custom preprocessing workflow using **Python** and **QGIS** to clean, extract, and transform raw datasets into an ER-compliant format before importing them into the database.
 - **Data Querying**: Executed both relational and spatial SQL queries
+
+## Tools 
+- **PostgreSQL & PostGIS**: Core database engine used for relational data and spatial geometry processing.
+- **pgAdmin 4**: Primary interface for database management.
+- **QGIS:** The "Spatial Engine" used for importing shapefile data
+- **Mapshaper:** The final visualization and optimization tool, used to inspect the final spatial output for web-readiness.
 
 ## KEY TECHNICAL FEATURES:
  - Data Integrity: Implementation of ON DELETE CASCADE via safe transactions.
