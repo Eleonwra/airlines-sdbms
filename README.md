@@ -4,8 +4,8 @@ This project is a **Relational and Geospatial Database** designed to model **a s
 ## Project Workflow
 - **Conceptual Design**: Created the ER Model to define entities
 - **Logical Design**: Mapped the ER model to a Relational Schema with Primary/Foreign Keys and normalization.
-- **Physical Implementation**: Built the database in PostgreSQL with PostGIS for spatial data types.
 - **ETL & Data Population**: Executed a custom preprocessing workflow using **Python** and **QGIS** to clean, extract, and transform raw datasets into an ER-compliant format before importing them into the database.
+- **Physical Implementation**: Built the database in PostgreSQL with PostGIS for spatial data types.
 - **Data Querying**: Executed both relational and spatial SQL queries
 
 ## Tools 
