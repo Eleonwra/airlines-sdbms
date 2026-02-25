@@ -1,2 +1,2 @@
 *.sql linguist-detectable=true
-*.py linguist-vendored
+*.py linguist-detectable=true
