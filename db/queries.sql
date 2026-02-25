@@ -5,7 +5,7 @@ JOIN public."Ticket" t ON p."Ticket_ID" = t."Ticket_ID"
 JOIN public."Flight" f ON t."Flight_ID" = f."Flight_ID"
 GROUP BY "Route_ID";
 
--- Active Airlines
+-- Active Airlines and their count of assigned routes
 SELECT DISTINCT 
     a."Name" AS Active_Airline,
     COUNT(u."Route_ID") OVER(PARTITION BY a."Airline_ID") AS Assigned_Routes
@@ -17,8 +17,7 @@ ORDER BY Assigned_Routes DESC;
 SELECT 
     a."Name" AS "Airline",
     air."Name" AS "Hub_Airport",
-    air."City",
-    air."Country",
+    air."Country_ID",
     h."Hub_Type"
 FROM public."has_hub" h
 JOIN public."Airline" a ON h."Airline_ID" = a."Airline_ID"
@@ -79,7 +78,7 @@ SELECT
         WHEN "Price" > 800 THEN 'High'
         WHEN "Price" BETWEEN 400 AND 800 THEN 'Standard'
         ELSE 'Low'
-    END AS "Ticket_price"
+    END AS "Ticket_range"
 FROM public."Payment";
 
 
@@ -179,4 +178,58 @@ SELECT "Flight_ID", "Full_Name", "Price"
 FROM FlightLeaderboard
 WHERE price_rank = 1;
 
+-- Next flight
+SELECT 
+    "Flight_ID", 
+    "Route_ID", 
+    "Departure_Time",
+    LEAD("Departure_Time") OVER(ORDER BY "Departure_Time") AS "Next_Flight_Departure",
+    LEAD("Departure_Time") OVER(ORDER BY "Departure_Time") - "Departure_Time" AS "Time_Between_Flights"
+FROM public."Flight";
 
+-- Return Flights
+SELECT 
+    f1."Flight_ID" AS Outbound_Flight,
+    f2."Flight_ID" AS Return_Flight,
+    r1."Airport_ID_start" AS Origin,
+    r1."Airport_ID_end" AS Destination,
+    f1."Departure_Time" AS Leaves_Home,
+    f2."Departure_Time" AS Returns_Home
+FROM public."Flight" f1
+JOIN public."Route" r1 ON f1."Route_ID" = r1."Route_ID"
+INNER JOIN public."Flight" f2 ON f1."Flight_ID" != f2."Flight_ID"
+JOIN public."Route" r2 ON f2."Route_ID" = r2."Route_ID"
+WHERE 
+    r1."Airport_ID_start" = r2."Airport_ID_end" 
+    AND r1."Airport_ID_end" = r2."Airport_ID_start"
+    AND f2."Departure_Time" > f1."Arrival_Time" + INTERVAL '2 hours'
+    AND f2."Departure_Time" <= f1."Departure_Time" + INTERVAL '1 month'
+ORDER BY f1."Departure_Time";
+
+-- Total Revenue per Flight by Ticket Class
+SELECT 
+    f."Flight_ID",
+    SUM(CASE WHEN t."Class" = 'Economy' THEN p."Price" ELSE 0 END) AS "Economy_Rev",
+    SUM(CASE WHEN t."Class" = 'Business' THEN p."Price" ELSE 0 END) AS "Business_Rev",
+    SUM(CASE WHEN t."Class" = 'First Class' THEN p."Price" ELSE 0 END) AS "FirstClass_Rev"
+FROM public."Flight" f
+JOIN public."Ticket" t ON f."Flight_ID" = t."Flight_ID"
+JOIN public."Payment" p ON t."Ticket_ID" = p."Ticket_ID"
+GROUP BY f."Flight_ID";
+
+-- Chronological Airport Activity Log
+SELECT 
+    "Flight_ID",
+    'Departure' AS event_type,
+    "Departure_Time" AS event_time
+FROM public."Flight"
+
+UNION ALL
+
+SELECT 
+    "Flight_ID",
+    'Arrival' AS event_type,
+    "Arrival_Time" AS event_time
+FROM public."Flight"
+
+ORDER BY event_time;

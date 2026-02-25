@@ -14,6 +14,14 @@ WHERE r."Route_ID" = 'SKG-ATH';
 
 INSERT INTO public."Flight" ("Flight_ID", "Departure_Time", "Arrival_Time", "Route_ID")
 SELECT 
+    'FL-RETURN-1', 
+    '2026-02-15 21:00:00'::timestamptz, -- Leaves 7 hours after the first flight
+    '2026-02-15 21:50:00'::timestamptz, 
+    'ATH-SKG'
+WHERE EXISTS (SELECT 1 FROM public."Route" WHERE "Route_ID" = 'ATH-SKG');
+
+INSERT INTO public."Flight" ("Flight_ID", "Departure_Time", "Arrival_Time", "Route_ID")
+SELECT 
     'FL-567', 
     '2026-02-20 17:00:00'::timestamptz,
     date_trunc('second',('2026-02-20 17:00:00'::timestamptz + 
